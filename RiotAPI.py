@@ -18,8 +18,10 @@ class RiotAPI(object):
         timediff = time.time() - self.prevQueryTime
 
         #Wait between requests because of the data cap
-        if timediff < 0.8:
-            time.sleep(0.8 - timediff)
+        #The value should not be much smaller than 500 request / 600 seconds = 0.833 request/second
+        #However, it can be slightly smaller (like 0.5) (appearantly). This greatly improves performance
+        if timediff < 0.5:
+            time.sleep(0.5 - timediff)
         response = requests.get(
             Consts.URL['base'].format(
                 proxy=self.region,
