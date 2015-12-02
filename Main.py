@@ -51,7 +51,7 @@ def main():
     openList = []
 
     #Get a summonerid from a summoner that is known to exist e.g. by using your own nickname
-    summoner = api.get_summoner_by_name('Selyse Stonetree')['selysestonetree']
+    summoner = api.get_summoner_by_name('timinat0r')['timinat0r']
     openList.append((summoner['id'], summoner['name']))
 
     #Counts the current iteration
