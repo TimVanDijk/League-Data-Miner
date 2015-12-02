@@ -11,8 +11,8 @@ def store_results(results):
     conn.commit()
     cursor = conn.execute("SELECT id, name FROM summoners")
     for row in cursor:
-       print "ID = ", row[0]
-       print "NAME = ", row[1]
+       print("ID = ", row[0])
+       print("NAME = ", row[1])
     conn.close()
 
 def collect_summoner_ids(api, beginId):
@@ -48,7 +48,7 @@ def main():
     amount = parser.parse_args().amount
     #The api key is not hardcoded because it should not be publicly available on github
     api_key = raw_input('Enter API key: ')
-    print ''
+    print('')
     api = RiotAPI(api_key)
 
     closedList = []
@@ -65,8 +65,8 @@ def main():
     while len(closedList) + len(openList) < amount:
         i += 1
         #Print info on the progress
-        print "Iteration: " + str(i) + " - IDs found: " + str(len(openList)\
-         + len(closedList)) + " - Current player: " + str(openList[0][1].encode('ascii', 'replace'))
+        print("Iteration: " + str(i) + " - IDs found: " + str(len(openList)\
+         + len(closedList)) + " - Current player: " + str(openList[0][1].encode('ascii', 'replace')))
         
         #Take the first element from the openList as the next summoner
         currentPlayer = openList[0]
@@ -93,7 +93,7 @@ def main():
     summonerList = set(closedList + openList)
     endTime = time.time()
 
-    print "\nCollected " + str(len(summonerList)) + " IDs in " + str(endTime - startTime) + " seconds"
+    print("\nCollected " + str(len(summonerList)) + " IDs in " + str(endTime - startTime) + " seconds")
     
     #Store the list of summoners in a file
     with open('summoners.txt', 'a') as database:

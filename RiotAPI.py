@@ -31,8 +31,8 @@ class RiotAPI(object):
         self.prevQueryTime = time.time()
         #print "Queried: " + str(response.url)
         if response.status_code != 200:
-            print 'Error code ' + str(response.status_code) + ' - ' + ErrorInfo.ERROR[str(response.status_code)]
-            print "Retrying..."
+            print('Error code ' + str(response.status_code) + ' - ' + ErrorInfo.ERROR[str(response.status_code)])
+            print("Retrying...")
             while response.status_code != 200:
                 #Wait one second and then try again
                 time.sleep(1)
@@ -44,7 +44,7 @@ class RiotAPI(object):
                     ),
                     params=args
                 )
-            print "Succes :)" 
+            print("Succes :)" )
                    
         return response.json()
 
