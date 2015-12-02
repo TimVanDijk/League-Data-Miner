@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 from RiotAPI import RiotAPI
 import argparse
 import time
