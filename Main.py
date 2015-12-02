@@ -6,7 +6,7 @@ import sqlite3
 def store_results(results):
     conn = sqlite3.connect('summoners.db')
     for s in results:
-        query = "INSERT INTO summoners(id, name) VALUES (" + str(s[0]) + ", " + str(s[1].encode('ascii', 'replace')) + ")"
+        query = "INSERT INTO summoners(id, name) VALUES (" + str(s[0]) + ", " + s[1] + ")"
         conn.execute(query)
     conn.commit()
     cursor = conn.execute("SELECT id, name FROM summoners")
@@ -47,7 +47,7 @@ def main():
     parser.add_argument("amount", help="Amount of IDs to collect", type=int)
     amount = parser.parse_args().amount
     #The api key is not hardcoded because it should not be publicly available on github
-    api_key = raw_input('Enter API key: ')
+    api_key = input('Enter API key: ')
     print('')
     api = RiotAPI(api_key)
 
@@ -66,7 +66,7 @@ def main():
         i += 1
         #Print info on the progress
         print("Iteration: " + str(i) + " - IDs found: " + str(len(openList)\
-         + len(closedList)) + " - Current player: " + str(openList[0][1].encode('ascii', 'replace')))
+         + len(closedList)) + " - Current player: " + openList[0][1])
         
         #Take the first element from the openList as the next summoner
         currentPlayer = openList[0]
