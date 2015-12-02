@@ -5,6 +5,7 @@ import argparse
 import time
 
 def save_summoners(summonerList, outputFile):
+    #To retrieve the data from the file, split on the first space
     with open(outputFile, 'a') as database:
         for s in summonerList:
             database.write(str(s[0]) + ' ' + str(s[1]) + '\n')
@@ -12,8 +13,6 @@ def save_summoners(summonerList, outputFile):
 def collect_summoner_ids(api, beginId):
     matchHistory = api.get_matchlist_by_summonerid(beginId)
     #Grab the 3 most recent matches played from the match history
-    if matchHistory == None:
-        return []
     matches = matchHistory['matches'][:3]
     
     #First we store the match ids from the selected matches and store them in a list
