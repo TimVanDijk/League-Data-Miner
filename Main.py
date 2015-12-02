@@ -24,10 +24,11 @@ def collect_summoner_ids(api, beginId):
     summoners = []
     for matchId in matchIds:
         matchInfo = api.get_match_by_id(str(matchId))
-        #And extract all the summoner name and id from each participant
-        for participant in matchInfo['participantIdentities']:
-            summoner = participant['player']
-            summoners.append((summoner['summonerId'], summoner['summonerName']))
+        if matchInfo != None:
+            #And extract all the summoner name and id from each participant
+            for participant in matchInfo['participantIdentities']:
+                summoner = participant['player']
+                summoners.append((summoner['summonerId'], summoner['summonerName']))
     #Remove duplicate entries
     summoners = set(summoners)
     
@@ -50,8 +51,7 @@ def main():
     openList = []
 
     #Get a summonerid from a summoner that is known to exist e.g. by using your own nickname
-    summoner = api.get_summoner_by_name('timinat0r')['timinat0r']
-
+    summoner = api.get_summoner_by_name('Selyse Stonetree')['selysestonetree']
     openList.append((summoner['id'], summoner['name']))
 
     #Counts the current iteration
