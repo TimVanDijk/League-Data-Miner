@@ -73,3 +73,9 @@ class RiotAPI(object):
             matchid=matchid
         )
         return self._request(api_url)
+
+    def get_all_champions(self):
+        api_url = Consts.URL['champions'].format(
+            version=Consts.API_VERSIONS['champion']
+        )
+        return self._request(api_url)
