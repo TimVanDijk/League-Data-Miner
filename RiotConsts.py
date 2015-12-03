@@ -16,3 +16,12 @@ REGIONS = {
     'europe_nordic_and_east' : 'eune',
     'europe_west' : 'euw'
 }
+
+AVATAR_URL = {
+    'base' : 'http://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{champname}.png'
+}
+
+DDRAGON_VERSIONS = {
+    'avatar' : '5.23.1'
+    }
+    

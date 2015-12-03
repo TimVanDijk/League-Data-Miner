@@ -19,7 +19,7 @@ class RiotAPI(object):
 
         #Wait between requests because of the data cap
         #The value should not be much smaller than 500 request / 600 seconds = 0.833 request/second
-        #However, it can be slightly smaller (like 0.5) (appearantly). This greatly improves performance
+        #However, it can be slightly smaller (like 0.5) (apparently). This greatly improves performance
         if timediff < 0.5:
             time.sleep(0.5 - timediff)
         response = requests.get(
@@ -60,12 +60,12 @@ class RiotAPI(object):
         )
         return self._request(api_url)
 
-    def get_matchlist_by_summonerid(self, summonerid):
+    def get_matchlist_by_summonerid(self, summonerid, params={}):
         api_url = Consts.URL['matchlist_by_summonerid'].format(
             version=Consts.API_VERSIONS['matchlist'],
             summonerid=summonerid
         )
-        return self._request(api_url)
+        return self._request(api_url, params)
 
     def get_match_by_id(self, matchid):
         api_url = Consts.URL['match_by_id'].format(
