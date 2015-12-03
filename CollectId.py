@@ -3,6 +3,7 @@
 from RiotAPI import RiotAPI
 import argparse
 import time
+import random
 
 def save_summoners(summonerList, outputFile):
     #To retrieve the data from the file, split on the first space
@@ -58,19 +59,22 @@ def main():
     i = 0
     startTime = time.time()
     while len(closedList) + len(openList) < amount:
-        i += 1
+        i += 1  
+              
+        #Take the a random element from the openList as the next summoner
+        r = random.randint(0, len(openList)-1)
+
         #Print info on the progress
         print("Iteration: " + str(i) + " - IDs found: " + str(len(openList)\
-         + len(closedList)) + " - Current player: " + openList[0][1])
-        
-        #Take the first element from the openList as the next summoner
-        currentPlayer = openList[0]
+         + len(closedList)) + " - Current player: " + openList[r][1])
+
+        currentPlayer = openList[r]
         results = collect_summoner_ids(api, currentPlayer[0])
         #Remove duplicates
         results = list(set(results))
 
         #Remove the selected player from the open list
-        openList = openList[1:]
+        openList = openList[:r] + openList[r+1:]
 
         #Add all NEW summoners we found to the open list
         for result in results:
