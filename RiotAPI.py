@@ -18,8 +18,8 @@ class RiotAPI(object):
         timediff = time.time() - self.prevQueryTime
 
         #Wait between requests because of the data cap
-        #The value should not be much smaller than 500 request / 600 seconds = 0.833 request/second
-        #However, it can be slightly smaller (like 0.5) (apparently). This greatly improves performance
+        #The value should not be much larger than 600 seconds / 500 requests = 1.2 seconds between requests
+        #A small value (0.5) is used to get good short-term results.
         if timediff < 0.5:
             time.sleep(0.5 - timediff)
         response = requests.get(
@@ -38,8 +38,11 @@ class RiotAPI(object):
                 if response.status_code == 404:
                     return None
                 print("Retrying...")
-                #Wait one second and then try again
-                time.sleep(1)
+                #Wait and then try again
+                if 'Retry-After' in response.headers:
+                    time.sleep(int(response.headers['Retry-After']))
+                else:
+                    time.sleep(1)
                 response = requests.get(
                     Consts.URL['base'].format(
                         proxy=self.region,
@@ -48,6 +51,7 @@ class RiotAPI(object):
                     ),
                     params=args
                 )
+                self.prevQueryTime = time.time()
                 print(api_url)
             print("Succes :)" )
                    
