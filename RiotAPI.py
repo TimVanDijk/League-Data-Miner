@@ -37,7 +37,7 @@ class RiotAPI(object):
                 if response.status_code != 429:
                     print('Error code ' + str(response.status_code) + ' - ' + ErrorInfo.ERROR[str(response.status_code)])
                 else:
-                    print("limited..")
+                    print("Rate limited. Trying again soon...")
                 if response.status_code == 404:
                     return None
                 #print("Retrying...")
