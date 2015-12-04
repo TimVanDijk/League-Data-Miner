@@ -56,12 +56,19 @@ def collect_matchIDs_from_patch(api, summonerIDs, patch_epoch_mil, end_epoch_mil
 def main():
     last_patch_epoch_mil = 1448372142000
     end_range_epoch_mil = 1449234650000
+    parts = 10
     #The api key is not hardcoded because it should not be publicly available on github
     api_key = input('Enter API key: ')
     print('')
     api = RiotAPI(api_key)
-    write_matches("matches.txt" ,collect_matchIDs_from_patch(api, read_summoners('summoners.txt'), last_patch_epoch_mil, end_range_epoch_mil))
-    
+    summonerList = list(read_summoners('summoners.txt'))
+
+    for i in range(0, parts):
+        print("Processing part " + str(i) + "...")
+        summonerListPart = summonerList[int(i/parts*len(summonerList)):int((i+1)/parts*len(summonerList))]
+        matchIdList = collect_matchIDs_from_patch(api, summonerListPart, last_patch_epoch_mil, end_range_epoch_mil)
+        write_matches("matches_part"+str(i)+".txt", matchIdList)
+    print("Done")
 
 if __name__ == "__main__":
     main()
