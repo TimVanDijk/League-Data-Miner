@@ -36,7 +36,9 @@ def collect_matchIDs_from_patch(api, summonerIDs, patch_epoch_mil):
         if time.time() > (lastMessage + 10):
             lastMessage = time.time()
             elapsed = time.time() - beginTime
-            print("Progress: " + str(int(elapsed)) + " sec " + str(round(100 * progcount / len(summonerIDs), 3)) + "% time to go: " + str(round((elapsed / (progcount / len(summonerIDs))) - elapsed,1) + " sec"))
+            print("Running for: " + str(int(elapsed)) + " sec  - "
+                + "Progress: " + str(round(100 * progcount / len(summonerIDs), 3)) + "% - "
+                + "Time remaining: " + str(round((elapsed / (progcount / len(summonerIDs))) - elapsed,1)) + " sec")
         temp = api.get_matchlist_by_summonerid(sid,{'beginTime':patch_epoch_mil ,'rankedQueues':'RANKED_SOLO_5x5'})
         if temp['totalGames'] != 0:
             tempList = temp['matches']
