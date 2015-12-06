@@ -16,7 +16,7 @@ class RiotAPI(object):
             if key not in args:
                 args[key] = value
         timediff = time.time() - self.prevQueryTime
-
+        if timediff < 1.2:
         #Wait between requests because of the data cap
         #The value should not be much larger than 600 seconds / 500 requests = 1.2 seconds between requests
         #A small value (0.5) is used to get good short-term results.
