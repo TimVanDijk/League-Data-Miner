@@ -63,7 +63,7 @@ def main():
     api = RiotAPI(api_key)
     summonerList = list(read_summoners('summoners.txt'))
 
-    for i in range(0, parts):
+    for i in range(2, parts):
         print("Processing part " + str(i+1) + " out of " + str(parts) + "...")
         summonerListPart = summonerList[int(i/parts*len(summonerList)):int((i+1)/parts*len(summonerList))]
         matchIdList = collect_matchIDs_from_patch(api, summonerListPart, last_patch_epoch_mil, end_range_epoch_mil)
