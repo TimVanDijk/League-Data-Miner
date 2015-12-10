@@ -26,7 +26,7 @@ def main():
     champList = []
     for item in champData.keys():
         champList.append((champData[item]['id'],champData[item]['key']))
-    write_champs('champions.txt',champList)
+    write_champs('champions.json',champList)
 
     avatardir = os.path.dirname(os.path.abspath(__file__))+"/portraits/"
     if not os.path.exists(avatardir):
