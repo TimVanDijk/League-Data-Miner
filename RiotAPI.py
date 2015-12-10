@@ -82,7 +82,25 @@ class RiotAPI(object):
         return self._request(api_url)
 
     def get_all_champions(self):
-        api_url = Consts.URL['champions'].format(
-            version=Consts.API_VERSIONS['champion']
-        )
-        return self._request(api_url)
+        #This doesnt use the _request method, because it doesn't use the same base.
+        requeststring = Consts.URL['staticbase'].format(
+            proxy='global',
+            region=self.region,
+            url=Consts.URL['champions'].format(
+                version=Consts.API_VERSIONS['champion']
+                )
+            )
+        response = requests.get(
+            requeststring,
+            params={'api_key' : self.api_key , 'version' : '5.23.1'}
+            )
+        return response.json()
+
+    def get_champion_portrait(self, champName):
+        #This doesnt use the _request method, because it doesn't use the same base.
+        return requests.get(
+            'http://ddragon.leagueoflegends.com/cdn/5.23.1/img/champion/{name}.png'.format(
+                name=champName
+            )
+            ).content
+
