@@ -1,10 +1,11 @@
 URL = {
     'base' : 'https://{proxy}.api.pvp.net/api/lol/{region}/{url}',
+    'staticbase' : 'https://{proxy}.api.pvp.net/api/lol/static-data/{region}/{url}',
     'summoner_by_name' : 'v{version}/summoner/by-name/{names}',
     'summoner_by_id' : 'v{version}/summoner/{summonids}',
     'matchlist_by_summonerid' : 'v{version}/matchlist/by-summoner/{summonerid}',
     'match_by_id' : 'v{version}/match/{matchid}',
-    'champions' : 'v{version}/champion'
+    'champions' : 'v{version}/champion'  
 }
 
 API_VERSIONS = {
