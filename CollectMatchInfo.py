@@ -6,11 +6,13 @@ import time
 
 def read_matchIDs(inputFile):
     matchIDs = set()
+    counter = 0
     with open(inputFile, 'r', encoding='utf-8') as database:#, encoding='utf-8'
         for line in database:
-            matchIDs.add(sid)
+            matchIDs.add(line.rstrip())
+            counter+=1
     print("Read " + str(counter) + " match IDs.")
-    print("From which " + str(len(matchID)) + " are unique.")
+    print("From which " + str(len(matchIDs)) + " are unique.")
     database.close()
     return matchIDs
 
@@ -49,7 +51,9 @@ def main():
     print('')
     api = RiotAPI(api_key)
     matchIDs = list(read_matchIDs('matches.txt'))
-
+    time.sleep(5)
+    print(api.get_match_by_id(matchIDs[0], {'includeTimeline': False}))
+    '''
     for i in range(0, parts):
         print("Processing part " + str(i+1) + " out of " + str(parts) + "...")
         matchListPart = matchIDs[int(i/parts*len(matchIDs)):int((i+1)/parts*len(matchIDs))]
@@ -57,6 +61,7 @@ def main():
         write_matches("matchinfo_part"+str(i)+".txt", matchInfoList)
         
     print("Done")
+    '''
 
 if __name__ == "__main__":
     main()

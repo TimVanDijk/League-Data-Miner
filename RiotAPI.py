@@ -74,12 +74,12 @@ class RiotAPI(object):
         )
         return self._request(api_url, params)
 
-    def get_match_by_id(self, matchid):
+    def get_match_by_id(self, matchid, params={}):
         api_url = Consts.URL['match_by_id'].format(
             version=Consts.API_VERSIONS['match'],
             matchid=matchid
         )
-        return self._request(api_url)
+        return self._request(api_url, params)
 
     def get_all_champions(self):
         #This doesnt use the _request method, because it doesn't use the same base.
