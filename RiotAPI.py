@@ -22,14 +22,17 @@ class RiotAPI(object):
         #A small value (0.5) is used to get good short-term results.
         #EDIT: Do not set to 0.5 as it will eventually get you blacklisted
             time.sleep(1.2 - timediff)
-        response = requests.get(
-            Consts.URL['base'].format(
-                proxy=self.region,
-                region=self.region,
-                url=api_url
-            ),
-            params=args
-        )
+        try:
+            response = requests.get(
+                Consts.URL['base'].format(
+                    proxy=self.region,
+                    region=self.region,
+                    url=api_url
+                ),
+                params=args
+            )
+        except:
+            return self._request(api_url, params)
         self.prevQueryTime = time.time()
         #print "Queried: " + str(response.url)
         if response.status_code != 200:
@@ -46,14 +49,17 @@ class RiotAPI(object):
                     time.sleep(int(response.headers['Retry-After']))
                 else:
                     time.sleep(1)
-                response = requests.get(
-                    Consts.URL['base'].format(
-                        proxy=self.region,
-                        region=self.region,
-                        url=api_url
-                    ),
-                    params=args
-                )
+                try:
+                    response = requests.get(
+                        Consts.URL['base'].format(
+                            proxy=self.region,
+                            region=self.region,
+                            url=api_url
+                        ),
+                        params=args
+                    )
+                except:
+                    return self._request(api_url, params)
                 self.prevQueryTime = time.time()
                 #print(api_url)
             #print("Succes :)" )
