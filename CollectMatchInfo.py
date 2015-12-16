@@ -63,6 +63,9 @@ def collect_matchInfo(api, matchIDs, part):
 def strip_info(matchInfo):
     strippedInfo = []
     for matchElement in matchInfo:
+        if matchElement == None:
+            print('match '+str(matchElement)+' = NONE ERORORORORORORO EROOOOR')
+            continue
         strippedElement = {}
         strippedElement['teams'] = matchElement['teams']
         for item in matchElement['participants']:

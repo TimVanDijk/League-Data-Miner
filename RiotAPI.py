@@ -32,7 +32,9 @@ class RiotAPI(object):
                 params=args
             )
         except:
-            return self._request(api_url, params)
+            print('ERRRROORORORORORORRRRRRRRRRRRRRRROOOOOOOOOOOR ERROR EROOOOR')
+            print(str(api_url) + str(params))
+            return _request(api_url, params)
         self.prevQueryTime = time.time()
         #print "Queried: " + str(response.url)
         if response.status_code != 200:
