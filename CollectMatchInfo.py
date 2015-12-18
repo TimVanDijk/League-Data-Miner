@@ -116,10 +116,11 @@ def main():
         matches = read_matchIDs("match_part_"+str(i)+".txt")
         temp = collect_matchInfo(api, matches, curIndex)
         print('')
-        temp = strip_info(temp)
+        write_matchInfo("matchInfo_part_" + str(curIndex) + ".json", temp, curIndex)
+        #temp = strip_info(temp)
         print("Done with part " + str(curIndex))
         print("Writing it to disk..")
-        write_matchInfo("matchInfo_part_" + str(curIndex) + ".json", temp, curIndex)
+        
 
     print("Cleaning the temporary files")
     for i in range(parts):
