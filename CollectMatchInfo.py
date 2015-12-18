@@ -49,7 +49,7 @@ def collect_matchInfo(api, matchIDs, part):
     progcount = 0
     matchInfo = []
     for mid in matchIDs:
-        if time.time() > (lastMessage + 5):
+        if time.time() > (lastMessage + 60):
             lastMessage = time.time()
             elapsed = time.time() - beginTime
             print("=====Progress update in part " + str(part) + ":\n"

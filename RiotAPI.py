@@ -2,10 +2,12 @@ import requests
 import RiotConsts as Consts
 import ErrorInfo
 import time
+import logging
 
 class RiotAPI(object):
     
     def __init__(self, api_key, region=Consts.REGIONS['europe_west']):
+        logging.basicConfig(filename='errors.log',level=logging.DEBUG)
         self.api_key = api_key
         self.region = region
         self.prevQueryTime = 0
@@ -33,7 +35,7 @@ class RiotAPI(object):
             )
         except:
             print('ERRRROORORORORORORRRRRRRRRRRRRRRROOOOOOOOOOOR ERROR EROOOOR')
-            print(str(api_url) + str(params))
+            logging.debug(str(api_url) + ' ' + str(params) + 'returned an error.')
             return _request(api_url, params)
         self.prevQueryTime = time.time()
         #print "Queried: " + str(response.url)
