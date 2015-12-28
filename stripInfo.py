@@ -44,9 +44,9 @@ def main():
     parts = 10  
     for curIndex in range(parts):
         print("Start part " + str(curIndex))
-        temp = read_matchInfo("match_part_"+str(curIndex)+".txt")
+        temp = read_matchInfo("match_part_"+str(curIndex)+".json")
         temp = strip_info(temp)
-        write_matchInfo("clean_match_part_"+str(curIndex)+".txt", temp, curIndex)
+        write_matchInfo("clean_match_part_"+str(curIndex)+".json", temp, curIndex)
         print("Done with part " + str(curIndex))
         print("Writing it to disk..")
         
