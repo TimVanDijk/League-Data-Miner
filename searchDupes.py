@@ -31,15 +31,15 @@ def strip_info(matchInfo):
     return strippedInfo
     
 def main():
-    parts = 10
-    ids = []
+    parts = 10 
     for curIndex in range(parts):
         print("Start part " + str(curIndex))
         temp = read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
         print("Stripping info..")
-        ids += strip_info(temp)
-    write_matchInfo("clean_match_part.json", temp, curIndex)
-    print("Writing it to disk..")
+        temp = strip_info(temp)
+        write_matchInfo("ids_match_part_"+str(curIndex)+".json", temp, curIndex)
+        print("Done with part " + str(curIndex))
+        print("Writing it to disk..")
 
 
 if __name__ == "__main__":
