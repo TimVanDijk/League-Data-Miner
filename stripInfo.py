@@ -28,10 +28,10 @@ def strip_info(matchInfo, idSet):
         if matchElement == None:
             print('match '+str(matchElement)+' = NONE ERORORORORORORO EROOOOR')
             continue
-        if matchElement['matchID'] in idSet:
+        if matchElement['matchId'] in idSet:
             print("dupe found and destroyed")
             continue
-        idSet.append(matchElement['matchID'])
+        idSet.append(matchElement['matchId'])
         strippedElement = {}
         strippedElement['teams'] = matchElement['teams']
         for item in matchElement['participants']:
