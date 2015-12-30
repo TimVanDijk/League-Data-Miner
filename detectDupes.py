@@ -15,11 +15,9 @@ def read_matchIds(inputFile):
     return data
     
 def main():
-    parts = 10
     ids = []
-    for curIndex in range(parts):
-        print("Start part " + str(curIndex))
-        ids += read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
+    name = input('Name of the file?:')
+    ids += read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
     counter = Counter(ids)
     for mId, amount in counter.items():
         if amount>1:
