@@ -21,12 +21,17 @@ def read_matchInfo(inputFile):
     database.close()
     return data
                 
-def strip_info(matchInfo):
+def strip_info(matchInfo, idSet):
     strippedInfo = []
+    print(len(idSet))
     for matchElement in matchInfo:
         if matchElement == None:
             print('match '+str(matchElement)+' = NONE ERORORORORORORO EROOOOR')
             continue
+        if matchElement['matchID'] in idSet:
+            print("dupe found and destroyed")
+            continue
+        idSet.append(matchElement['matchID'])
         strippedElement = {}
         strippedElement['teams'] = matchElement['teams']
         for item in matchElement['participants']:
@@ -40,12 +45,13 @@ def strip_info(matchInfo):
     return strippedInfo
     
 def main():
-    parts = 10  
+    idSet = set()
+    parts = 20  
     for curIndex in range(parts):
         print("Start part " + str(curIndex))
         temp = read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
         print("Stripping info..")
-        temp = strip_info(temp)
+        temp = strip_info(temp, idSet)
         write_matchInfo("clean_match_part_"+str(curIndex)+".json", temp, curIndex)
         print("Done with part " + str(curIndex))
         print("Writing it to disk..")
