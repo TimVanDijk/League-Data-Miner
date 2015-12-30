@@ -59,24 +59,6 @@ def collect_matchInfo(api, matchIDs, part):
         matchInfo.append(api.get_match_by_id(mid))
         progcount = progcount + 1
     return matchInfo
-                
-def strip_info(matchInfo):
-    strippedInfo = []
-    for matchElement in matchInfo:
-        if matchElement == None:
-            print('match '+str(matchElement)+' = NONE ERORORORORORORO EROOOOR')
-            continue
-        strippedElement = {}
-        strippedElement['teams'] = matchElement['teams']
-        for item in matchElement['participants']:
-            item.pop('stats',None)
-            item.pop('masteries',None)
-            item.pop('runes',None)
-            item.pop('timeline',None)
-            item.pop('highestAchievedSeasonTier',None)
-        strippedElement['participants'] = matchElement['participants']
-        strippedInfo.append(strippedElement)
-    return strippedInfo
     
 def main():
     #Usage of the argument: Only give a starting index if an earlier run of the program failed
@@ -113,7 +95,7 @@ def main():
     #Now onto the actual data collection:
     
     for curIndex in range(startpart, parts):
-        matches = read_matchIDs("match_part_"+str(i)+".txt")
+        matches = read_matchIDs("match_part_"+str(curIndex)+".txt")
         temp = collect_matchInfo(api, matches, curIndex)
         print('')
         write_matchInfo("matchInfo_part_" + str(curIndex) + ".json", temp, curIndex)
