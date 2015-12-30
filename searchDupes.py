@@ -5,11 +5,11 @@ import os.path
 import sys
 import json
 
-def write_matchInfo(outputFile, matchInfo):
+def write_matchInfo(outputFile, matchInfo, part):
     encoder = json.JSONEncoder()
     with open(outputFile, 'w') as database:
             database.write(encoder.encode(matchInfo))
-    print("Done writing.")
+    print("Done writing part " + str(part) + ".")
     print('')
     database.close()
 
