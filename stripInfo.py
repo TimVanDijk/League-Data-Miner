@@ -31,7 +31,7 @@ def strip_info(matchInfo, idSet):
         if matchElement['matchId'] in idSet:
             print("dupe found and destroyed")
             continue
-        idSet.append(matchElement['matchId'])
+        idSet.add(matchElement['matchId'])
         strippedElement = {}
         strippedElement['teams'] = matchElement['teams']
         for item in matchElement['participants']:
