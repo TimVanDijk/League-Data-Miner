@@ -29,8 +29,8 @@ def main():
     for curIndex in range(parts):
         print("Part " + str(curIndex))
         fullSet += read_matchInfo(str(names)+str(curIndex)+".json")
-    write_matchInfo("merged_data.json", fullSet)
     print("Writing it to disk..")
+    write_matchInfo("merged_data.json", fullSet)
 
 if __name__ == "__main__":
     main()
