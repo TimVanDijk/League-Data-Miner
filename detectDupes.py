@@ -17,7 +17,7 @@ def read_matchIds(inputFile):
 def main():
     ids = []
     name = input('Name of the file?:')
-    ids += read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
+    ids += read_matchIds("matchInfo_part_"+str(curIndex)+".json")
     counter = Counter(ids)
     for mId, amount in counter.items():
         if amount>1:
