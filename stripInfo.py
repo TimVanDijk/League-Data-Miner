@@ -14,7 +14,6 @@ def write_matchInfo(outputFile, matchInfo, part):
     database.close()
 
 def read_matchInfo(inputFile):
-    encoder = json.JSONEncoder()
     print("Reading json")
     print('')
     with open(inputFile, 'r') as database:
@@ -41,10 +40,10 @@ def strip_info(matchInfo):
     return strippedInfo
     
 def main():
-    parts = 1  
+    parts = 10  
     for curIndex in range(parts):
         print("Start part " + str(curIndex))
-        temp = read_matchInfo("match_part_"+str(curIndex)+".json")
+        temp = read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
         print("Stripping info..")
         temp = strip_info(temp)
         write_matchInfo("clean_match_part_"+str(curIndex)+".json", temp, curIndex)
