@@ -102,20 +102,20 @@ def buildMatrices(api, filename):
             matchesProcessed += 1
     print("[+] - Processed " + str(matchesProcessed) + " matches.")
 
-def predict(team1, team2, wrWeight, syWeight, power):
+def predict(team1, team2, power):
     global versusMatrix
     global synergyMatrix
-    team1winratescore = 0
-    team1synergyscore = 0
-    team2winratescore = 0
-    team2synergyscore = 0
+    team1winratescore = 100000
+    team1synergyscore = 100000
+    team2winratescore = 100000
+    team2synergyscore = 100000
     for i in team1:
         a = idToIndex(i)
         for j in team2:
             b = idToIndex(j)
             ratio = float(versusMatrix[a][b][0]) / versusMatrix[a][b][1]
             #print(idToName(i) + " vs " + idToName(j) + " - " + str(ratio) )
-            team1winratescore += sign(ratio - 0.5) * (abs(0.5 - ratio) ** power)
+            team1winratescore *= ratio ** power
     #print("---------------------")
     for i in team1:
         a = idToIndex(i)
@@ -124,7 +124,7 @@ def predict(team1, team2, wrWeight, syWeight, power):
                 b = idToIndex(j)
                 ratio = float(synergyMatrix[a][b][0]) / synergyMatrix[a][b][1]
                 #print(idToName(i) + " with " + idToName(j) + " - " + str(ratio) )
-                team1synergyscore += sign(ratio - 0.5) * (abs(0.5 - ratio) ** power)
+                team1synergyscore *= ratio ** power
     #print("---------------------")
     for i in team2:
         a = idToIndex(i)
@@ -132,7 +132,7 @@ def predict(team1, team2, wrWeight, syWeight, power):
             b = idToIndex(j)
             ratio = float(versusMatrix[a][b][0]) / versusMatrix[a][b][1]
             #print(idToName(i) + " vs " + idToName(j) + " - " + str(ratio) )
-            team2winratescore += sign(ratio - 0.5) * (abs(0.5 - ratio) ** power)
+            team2winratescore *= ratio ** power
     #print("---------------------")
     for i in team2:
         a = idToIndex(i)
@@ -141,13 +141,13 @@ def predict(team1, team2, wrWeight, syWeight, power):
                 b = idToIndex(j)
                 ratio = float(synergyMatrix[a][b][0]) / synergyMatrix[a][b][1]
                 #print(idToName(i) + " with " + idToName(j) + " - " + str(ratio) ** 0.75)
-                team2synergyscore += sign(ratio - 0.5) * (abs(0.5 - ratio) ** power)
+                team2synergyscore *= ratio ** power
 
-    #print("Team 1 winrate score: " + str(team1winratescore))
-    #print("Team 1 synergy score: " + str(team1synergyscore))
-    #print("Team 2 winrate score: " + str(team2winratescore))
-    #print("Team 2 synergy score: " + str(team2synergyscore))
-    return (wrWeight * (team2winratescore / 25.0) + syWeight * (team2synergyscore / 20.0)) > (wrWeight * (team1winratescore / 25.0) + syWeight * (team1synergyscore / 20.0))
+    print("Team 1 winrate score: " + str(team1winratescore))
+    print("Team 1 synergy score: " + str(team1synergyscore))
+    print("Team 2 winrate score: " + str(team2winratescore))
+    print("Team 2 synergy score: " + str(team2synergyscore))
+    return (team2winratescore + 1.5 * team2synergyscore * (0.5 ** 5)) > (team1winratescore + (1.5 *team1synergyscore * (0.5 ** 5)))
 
 def testClassifier(filename, vals):
     print("[*] - Testing classifier...")
@@ -158,7 +158,7 @@ def testClassifier(filename, vals):
         while line:
             l = line.split(' ')
             winner = int(l[0])
-            p = predict(l[1:6], l[6:11], float(vals[0]), float(vals[1]), float(vals[2]))
+            p = predict(l[1:6], l[6:11], float(vals[0]))
             if p == winner:
                 correct += 1
             line = f.readline().strip('\n')
@@ -168,7 +168,6 @@ def testClassifier(filename, vals):
     print("Percentage correct: " + str(float(correct) / matchesProcessed))
 
 def main():
-    global versusMatrix
     api_key = input('[!] - Enter API key: ')
     print("")
     api = RiotAPI(api_key)
