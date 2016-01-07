@@ -24,7 +24,7 @@ def strip_info(matchInfo, idSet):
     for match in matchInfo:
         #check if dupe or null
         if match == None:
-            print('match '+str(match)+' = None')
+            print('match = None')
             continue
         if match['matchId'] not in idSet:
             print("dupe found and destroyed")
@@ -40,7 +40,7 @@ def strip_info(matchInfo, idSet):
             if team['teamId']==200:
                 win200=team['winner']
         if (win100==None or win200==None) or (win100==win200):
-            print('match '+str(match)+' victory data incorrect')
+            print('match '+str(match['matchId'])+' victory data incorrect')
             continue
         
         #check if champions and bans valid
@@ -64,18 +64,29 @@ def strip_info(matchInfo, idSet):
                     bans.append(ban['championId'])
                 
         if count100!=5 or count200!=5:
-            print('match '+str(match)+' champion count incorrect')
+            print('match '+str(match['matchId'])+' champion count incorrect')
             print("team 100: " + str(count100) + " team 200: " + str(count200))
             for participant in match['participants']:
                 print(participant)
             continue
 
-        championstotal = champions100 + champions200 + bans
+        championstotal = champions100 + champions200
+        championstotalbans = champions100 + champions200 + bans
         #print(championstotal)
         #print(Counter(championstotal).items())
         for champ, amount in Counter(championstotal).items():
             if (amount > 1):
-                print('match '+str(match)+' champion pick/ban incorrect')
+                print('match '+str(match['matchId'])+' champion occurs twice')
+                continue
+
+        for champ, amount in Counter(bans).items():
+            if (amount > 1):
+                print('match '+str(match['matchId'])+' champion banned twice')
+                continue
+
+        for champ, amount in Counter(bans).items():
+            if (amount > 1):
+                print('match '+str(match['matchId'])+' banned champion played the match')
                 continue
 
         #Strip the info
