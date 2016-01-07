@@ -66,8 +66,6 @@ def strip_info(matchInfo, idSet):
         if count100!=5 or count200!=5:
             print('match '+str(match['matchId'])+' champion count incorrect')
             print("team 100: " + str(count100) + " team 200: " + str(count200))
-            for participant in match['participants']:
-                print(participant)
             continue
 
         championstotal = champions100 + champions200
