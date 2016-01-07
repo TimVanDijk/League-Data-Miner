@@ -48,7 +48,8 @@ def fillIdset(parts, idSet):
     for curIndex in range(parts):
         temp = read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
         for match in temp:
-            idSet.add(match['matchId'])
+            if match != None
+                idSet.add(match['matchId'])
     
 def main():
     idSet = set()
