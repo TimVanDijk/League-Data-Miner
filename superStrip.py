@@ -91,7 +91,7 @@ def strip_info(matchInfo, idSet):
 def fillIdset(parts, idSet):
     for curIndex in range(parts):
         temp = read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
-        print(matchList[0].keys())
+        print(temp[0].keys())
         for match in temp:
             if match != None:
                 idSet.add(match['matchId'])
