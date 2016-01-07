@@ -59,6 +59,7 @@ def strip_info(matchInfo, idSet):
         bans = []
         for team in match['teams']:
             for ban in team['bans']:
+                print(ban)
                 bans.append(ban[championId])
                 
         if count100!=5 or count200!=5:
