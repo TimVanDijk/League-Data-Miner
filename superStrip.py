@@ -75,17 +75,23 @@ def strip_info(matchInfo, idSet):
         for champ, amount in Counter(championstotal).items():
             if (amount > 1):
                 print('match '+str(match['matchId'])+' champion occurs twice')
-                continue
+                break
+        else:
+            continue
 
         for champ, amount in Counter(bans).items():
             if (amount > 1):
                 print('match '+str(match['matchId'])+' champion banned twice')
-                continue
+                break
+        else:
+            continue
 
         for champ, amount in Counter(bans).items():
             if (amount > 1):
                 print('match '+str(match['matchId'])+' banned champion played the match')
-                continue
+                break
+        else:
+            continue
 
         #Strip the info
         strippedElement = {}
