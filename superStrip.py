@@ -79,14 +79,14 @@ def strip_info(matchInfo, idSet):
 
         #Strip the info
         strippedElement = {}
-        strippedElement['teams'] = matchElement['teams']
-        for item in matchElement['participants']:
+        strippedElement['teams'] = match['teams']
+        for item in match['participants']:
             item.pop('stats',None)
             item.pop('masteries',None)
             item.pop('runes',None)
             item.pop('timeline',None)
             item.pop('highestAchievedSeasonTier',None)
-        strippedElement['participants'] = matchElement['participants']
+        strippedElement['participants'] = match['participants']
         strippedInfo.append(strippedElement)
     return strippedInfo
 
