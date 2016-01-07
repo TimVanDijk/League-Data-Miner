@@ -4,7 +4,7 @@ import time
 import os.path
 import sys
 import json
-'
+
 def write_matchInfo(outputFile, matchInfo):
     encoder = json.JSONEncoder()
     with open(outputFile, 'w') as database:
