@@ -69,7 +69,8 @@ def strip_info(matchInfo, idSet):
             continue
 
         championstotal = champions100 + champions200 + bans
-
+        print(championstotal)
+        print(Counter(championstotal).items())
         for champ, amount in Counter(championstotal).items():
             if (amount > 1):
                 print('match '+str(match)+' champion pick/ban incorrect')
