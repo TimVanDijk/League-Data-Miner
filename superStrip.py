@@ -72,25 +72,29 @@ def strip_info(matchInfo, idSet):
         championstotalbans = champions100 + champions200 + bans
         #print(championstotal)
         #print(Counter(championstotal).items())
+        dieFlag = False
         for champ, amount in Counter(championstotal).items():
             if (amount > 1):
                 print('match '+str(match['matchId'])+' champion occurs twice')
+                dieFlag = True
                 break
-        else:
+        if dieFlag:
             continue
-
+        
         for champ, amount in Counter(bans).items():
             if (amount > 1):
                 print('match '+str(match['matchId'])+' champion banned twice')
+                dieFlag = True
                 break
-        else:
+        if dieFlag:
             continue
-
+        
         for champ, amount in Counter(bans).items():
             if (amount > 1):
                 print('match '+str(match['matchId'])+' banned champion played the match')
+                dieFlag = True
                 break
-        else:
+        if dieFlag:
             continue
 
         #Strip the info
@@ -123,8 +127,10 @@ def main():
     for curIndex in range(parts):
         print("Start part " + str(curIndex))
         temp = read_matchInfo("matchInfo_part_"+str(curIndex)+".json")
+        print(len(temp))
         print("Stripping info..")
         temp = strip_info(temp, idSet)
+        print(len(temp))
         cleanInfo += temp
     print("Writing everything to disk")
     write_matchInfo("clean_merged_data.json",cleanInfo)
