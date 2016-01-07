@@ -98,7 +98,7 @@ def main():
     idSet = set()
     parts = int(input('How many parts need to be processed?'))
     fillIdset(parts, idSet)
-    print(len(idSet) + " unique matches found")
+    print(str(len(idSet)) + " unique matches found")
     time.sleep(0.5)
     cleanInfo = []
     for curIndex in range(parts):
