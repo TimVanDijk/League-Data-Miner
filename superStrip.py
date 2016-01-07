@@ -4,6 +4,7 @@ import time
 import os.path
 import sys
 import json
+from collections import Counter
 
 def write_matchInfo(outputFile, matchInfo):
     encoder = json.JSONEncoder()
