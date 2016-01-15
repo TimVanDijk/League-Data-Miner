@@ -86,7 +86,7 @@ def trainAndTestNetwork(H):
     
     #Train the neural network
     print("[*] - Started training the neural network")
-    error = net.train(inp, tar, epochs=5, show=1, goal=0.02)
+    error = net.train(inp, tar, epochs=20, show=1, goal=0.02)
     print("[+] - Finished training the neural network")
 
     #Build list containing test set
