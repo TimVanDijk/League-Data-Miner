@@ -137,9 +137,6 @@ def main():
     champList = buildChampList(api)
     buildMatrices()
     trainAndTestNetwork(3)
-    #for i in range(1, 21):
-    #    trainAndTestNetwork(i)  
-
 
 if __name__ == "__main__":
     main()

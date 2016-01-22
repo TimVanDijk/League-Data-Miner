@@ -1,4 +1,5 @@
 from RiotAPI import RiotAPI
+import math
 
 champList = None
 versusMatrix = None
@@ -90,28 +91,25 @@ def buildMatrices(api, filename):
     synergyMatrix = [[(1, 2) for x in range(128)] for x in range(128)] #Initialize with 1 win 2 games.
 
     matchesProcessed = 0
-    temp = 0
     with open(filename, 'r') as f:
         line = f.readline().strip('\n')
         while line:
             l = line.split(' ')
             winner = int(l[0])
-            temp += winner
             if winner == 0:
                 AdjustVersusMatrix(l[1:6], l[6:11])
                 AdjustSynergyMatrix(l[1:6], l[6:11])
             line = f.readline().strip('\n')
             matchesProcessed += 1
     print("[+] - Processed " + str(matchesProcessed) + " matches.")
-    print(temp)
 
-def predict(team1, team2, power):
+def predict(team1, team2):
     global versusMatrix
     global synergyMatrix
-    team1winratescore = 100000
-    team1synergyscore = 100000
-    team2winratescore = 100000
-    team2synergyscore = 100000
+    team1winratescore = 33554432 #2^25
+    team1synergyscore = 1048576  #2^20
+    team2winratescore = 33554432 #2^25
+    team2synergyscore = 1048576  #2^20
     for i in team1:
         a = idToIndex(i)
         for j in team2:
@@ -146,34 +144,20 @@ def predict(team1, team2, power):
                 #print(idToName(i) + " with " + idToName(j) + " - " + str(ratio) ** 0.75)
                 team2synergyscore *= ratio
 
-    team1synergyscore *= 0.5 ** 5
-    team2synergyscore *= 0.5 ** 5
-    print("Team 0 winrate score: " + str(team1winratescore))
-    print("Team 0 synergy score: " + str(team1synergyscore))
-    print("Team 1 winrate score: " + str(team2winratescore))
-    print("Team 2 synergy score: " + str(team2synergyscore))
-    print("Prediction: ")
-    print(int(team2winratescore + team2synergyscore > team1winratescore + team1synergyscore))
-    return team2winratescore + team2synergyscore > (team1winratescore + team1synergyscore) * power
-def testClassifier(filename, vals):
-    print("[*] - Testing classifier...")
-    matchesProcessed = 0
-    correct = 0
-    with open(filename, 'r') as f:
-        line = f.readline().strip('\n')
-        while line:
-            l = line.split(' ')
-            winner = int(l[0])
-            p = predict(l[1:6], l[6:11], float(vals[0]))
-            print("Actual: ")
-            print(winner)
-            if p == winner:
-                correct += 1
-            line = f.readline().strip('\n')
-            matchesProcessed += 1
-    print("Correct: " + str(correct))
-    print("Total: " + str(matchesProcessed))
-    print("Percentage correct: " + str(float(correct) / matchesProcessed))
+    team1winratescore = math.log(team1winratescore, 2)
+    team1synergyscore = math.log(team1synergyscore, 2)
+    team2winratescore = math.log(team2winratescore, 2)
+    team2synergyscore = math.log(team2synergyscore, 2)
+    
+    #print("Team 0 winrate score: " + str(team1winratescore))
+    #print("Team 0 synergy score: " + str(team1synergyscore))
+    #print("Team 1 winrate score: " + str(team2winratescore))
+    #print("Team 1 synergy score: " + str(team2synergyscore))
+    #print("Prediction: ")
+    #print(int(team2winratescore + team2synergyscore > team1winratescore + team1synergyscore))
+    #print("Team1 score: " + str(team1winratescore + team1synergyscore))
+    #print("Team2 score: " + str(team2winratescore + team2synergyscore))
+    return team1winratescore + team1synergyscore, team2winratescore + team2synergyscore
 
 def main():
     api_key = input('[!] - Enter API key: ')
@@ -184,24 +168,29 @@ def main():
     print("[*] - Processing data...")
     buildMatrices(api, filename)
     print("[+] - Winrate and synergy matrix built!")
-    team1 = []
-    team2 = []
-    while True:
-        a = input("Values: ")
-        testClassifier(testname, a.split(' '))
-    while False:
-        for team, color in [(team1, "blue"), (team2, "red")]:
-            print("[*] - Enter the names of the five champions in the " + color + " team seperated by commas:")
-            line = input(">> ")
-            line = line.strip('\n').split(',')
-            for champName in line:
-                team.append(nameToId(champName.lstrip().rstrip()))
+    print("[*] - Testing the classifier...")
+    correct = 0
+    total = 0
+    with open('test_data.txt', 'r') as f:
+        line = f.readline().strip('\n')
+        while line:
+            l = line.split(' ')
+            winner = int(l[0])
+            team1 = l[1:6]
+            team2 = l[6:11]
+            out = predict(team1, team2)
+            p = out[1] > out[0]
+            if p == False and winner == 0:
+                correct += 1
+            if p == True and winner == 1:
+                correct += 1
+            total += 1
+            line = f.readline().strip('\n')
+    print("[+] - Finished testing the classifier")
 
-        p = predict(team1, team2)
-        if not p:
-            print("[+] - Blue team wins.")
-        else:
-            print("[+] - Red team wins.")
+    print("[*] - Correct: " + str(correct))
+    print("[*] - Total: " + str(total))   
+    print("[*] - Percentage: " + str(float(correct) / total))
 
 if __name__ == "__main__":
     main()
