@@ -1,6 +1,7 @@
 from RiotAPI import RiotAPI
 import math
 global winLoss
+from random import shuffle
 
 
 champList = None
@@ -52,38 +53,47 @@ def buildChampList(api):
 
     return sorted(champList, key=lambda x: x[0])
 
-def getMatches(filename):
+def getMatches(matchArray):
     global winLoss
     winLoss = [(1, 1) for x in range(128)]
     
     matchesProcessed = 0
+    k = 0
+    while k < len(matchArray):
+        l = matchArray[k]
+        winner = int(l[0])
+        if winner == 0:
+            for i in l[1:6]:
+                a = idToIndex(int(i))
+                #winLoss[a][0] += 1
+                winLoss[a] = (winLoss[a][0]+1,winLoss[a][1])
+            for i in l[6:11]:
+                a = idToIndex(int(i))
+                #winLoss[a][1] += 1
+                winLoss[a] = (winLoss[a][0],winLoss[a][1]+1)
+        else:
+            for i in l[1:6]:
+                a = idToIndex(int(i))
+                #winLoss[a][1] += 1
+                winLoss[a] = (winLoss[a][0]+1,winLoss[a][1]+1)
+            for i in l[6:11]:
+                a = idToIndex(int(i))
+                #winLoss[a][0] += 1
+                winLoss[a] = (winLoss[a][0]+1,winLoss[a][1])
+        k += 1
+        matchesProcessed += 1
+    print("[+] - Processed " + str(matchesProcessed) + " matches.")
+    
+def getMatchData(filename):
+    matches = []
     with open(filename, 'r') as f:
         line = f.readline().strip('\n')
         while line:
             l = line.split(' ')
-            winner = int(l[0])
-            if winner == 0:
-                for i in l[1:6]:
-                    a = idToIndex(int(i))
-                    #winLoss[a][0] += 1
-                    winLoss[a] = (winLoss[a][0]+1,winLoss[a][1])
-                for i in l[6:11]:
-                    a = idToIndex(int(i))
-                    #winLoss[a][1] += 1
-                    winLoss[a] = (winLoss[a][0],winLoss[a][1]+1)
-            else:
-                for i in l[1:6]:
-                    a = idToIndex(int(i))
-                    #winLoss[a][1] += 1
-                    winLoss[a] = (winLoss[a][0]+1,winLoss[a][1]+1)
-                for i in l[6:11]:
-                    a = idToIndex(int(i))
-                    #winLoss[a][0] += 1
-                    winLoss[a] = (winLoss[a][0]+1,winLoss[a][1])
+            matches.append(l)
             line = f.readline().strip('\n')
-            matchesProcessed += 1
-    print("[+] - Processed " + str(matchesProcessed) + " matches.")
-    
+    return matches
+
 def predict(team1, team2):
     global winLoss
     
@@ -125,40 +135,60 @@ def predict(team1, team2):
     out = (prob1win,prob1loss)
     return out;
 
+def getSlices(dataset, indices, k):
+    slices = []
+    for i in indices:
+        slices += ([x for ind, x in enumerate(dataset) if ind % k == i])
+    return slices
+
+def validate(matchArray):
+    print("[*] - Testing the classifier...")
+    correct = 0
+    total = 0
+    k = 0
+    while k < len(matchArray):
+        l = matchArray[k]
+        winner = int(l[0])
+        team1 = l[1:6]
+        team2 = l[6:11]
+        out = predict(team1, team2)
+        if out[1] <= out[0] and winner == 0:
+            correct += 1
+        if out[1] > out[0] and winner == 1:
+            correct += 1
+        total += 1
+        k += 1
+    return float(correct)/total
+    
 def main():
     global champList
     api_key = input('[!] - Enter API key: ')
     print("")
     api = RiotAPI(api_key)
-    filename = 'reduced_data.txt'
-    testname = 'test_data.txt'
+    filename = 'combined.txt'
     champList = buildChampList(api)
     print("[*] - Processing data...")
-    getMatches(filename)
-    print("[+] - Winrate and synergy matrix built!")
-    print("[*] - Testing the classifier...")
-    correct = 0
-    total = 0
-    with open('test_data.txt', 'r') as f:
-        line = f.readline().strip('\n')
-        while line:
-            l = line.split(' ')
-            winner = int(l[0])
-            team1 = l[1:6]
-            team2 = l[6:11]
-            out = predict(team1, team2)
-            p = out[1] > out[0]
-            if p == False and winner == 0:
-                correct += 1
-            if p == True and winner == 1:
-                correct += 1
-            total += 1
-            line = f.readline().strip('\n')
-    print("[+] - Finished testing the classifier")
-
-    print("[*] - Correct: " + str(correct))
-    print("[*] - Total: " + str(total))   
-    print("[*] - Percentage: " + str(float(correct) / total))
+    matches = getMatchData(filename)
+    shuffle(matches)
+    k = 10
+    allResult = []
+    
+    kfold = [([x for x  in range(10) if x!= i],[i]) for i in range(10)]
+    for item in kfold:
+        train = getSlices(matches,item[0],k)
+        test = getSlices(matches,item[1],k)
+        
+        getMatches(train)
+        result = validate(test)
+        print("[.] Test " + str(item[1][0] + 1) + " result is " + str(result) + ".")
+        allResult.append(result)
+        
+    summ = 0;
+    for item in allResult:
+        summ += item
+    print("[@] " + str(k) + "-fold: " + str(float(summ)/len(allResult)) + " percent correct.")
+    
+    
 
 if __name__ == "__main__":
     main()
