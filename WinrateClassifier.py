@@ -99,6 +99,9 @@ def buildMatrices(api, filename):
             if winner == 0:
                 AdjustVersusMatrix(l[1:6], l[6:11])
                 AdjustSynergyMatrix(l[1:6], l[6:11])
+            else:
+                AdjustVersusMatrix(l[6:11], l[1:6])
+                AdjustSynergyMatrix(l[6:11], l[1:6])
             line = f.readline().strip('\n')
             matchesProcessed += 1
     print("[+] - Processed " + str(matchesProcessed) + " matches.")
