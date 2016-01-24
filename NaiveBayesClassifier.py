@@ -75,7 +75,7 @@ def getMatches(matchArray):
             for i in l[1:6]:
                 a = idToIndex(int(i))
                 #winLoss[a][1] += 1
-                winLoss[a] = (winLoss[a][0]+1,winLoss[a][1]+1)
+                winLoss[a] = (winLoss[a][0],winLoss[a][1]+1)
             for i in l[6:11]:
                 a = idToIndex(int(i))
                 #winLoss[a][0] += 1
@@ -105,7 +105,6 @@ def predict(team1, team2):
     total = win + loss
     probwin = float(win)/total
     probloss = float(loss)/total
-    
     probchampions = 1
     for champ1 in team1:
         tup = winLoss[idToIndex(champ1)]
